@@ -222,7 +222,7 @@ minlos_plot_2017 <- ggplot(minlos_data_2017, aes(x = minlos)) +
   scale_x_continuous(limits = c(0,31), expand = c(0,0), breaks = seq(0, 31, 5)) +
   scale_y_continuous(limits = c(0,15), expand = c(0,0), breaks = seq(0, 15, 5)) +
   xlab("Minimum length of stay (days)") +
-  ylab("Number of Red Knots")
+  ylab("Number of red knots")
 
 # 2018
 bandedbirds_2018 <- readRDS("data-files/ALLCAMPS2018_bandedbirds_resights.rds")
@@ -258,7 +258,7 @@ minlos_plot_2018 <- ggplot(minlos_data_2018, aes(x = minlos)) +
   scale_x_continuous(limits = c(0,31), expand = c(0,0), breaks = seq(0, 31, 5)) +
   scale_y_continuous(limits = c(0,31), expand = c(0,0), breaks = seq(0, 31, 5)) +
   xlab("Minimum length of stay (days)") +
-  ylab("Number of Red Knots")
+  ylab("Number of red knots")
 
 # zes and minlos plots
 stopover_plots <- arrangeGrob(zes_plot_2017, minlos_plot_2017, zes_plot_2018, minlos_plot_2018, nrow=2, ncol=2)

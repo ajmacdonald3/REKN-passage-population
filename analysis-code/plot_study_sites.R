@@ -1,6 +1,7 @@
 library(ggmap)
 library(ggsn)
 library(tidyverse)
+library(cowplot)
 
 #### BLACK AND WHITE FOR THESIS ####
 
@@ -52,20 +53,29 @@ bb4 <- data.frame(long = unlist(bb3[c(2, 4)]), lat = unlist(bb3[c(1,3)]))
 
 inset_map <- ggmap(map2) +
   geom_polygon(aes(x = x, y = y),
-               data = bbx_df, colour = "grey50", fill = NA, size = 2) +
-  geom_point(aes(x = -63.9, y = 50.2), colour = "grey50", size = 7) +
-  geom_label(aes(x = -63.9, y = 51.7, label = "Mingan\nArchipelago"), family = "Times",  size = 5, fill = "white", label.size = 0) +
-  annotate("text", label = "James\nBay", family = "Times", x = -84.5, y = 52.3, size = 5) +
+               data = bbx_df, colour = "grey50", fill = NA, size = 1) +
+  geom_point(aes(x = -63.9, y = 50.2), colour = "grey50", size = 4) +
+  geom_label(aes(x = -63.9, y = 52, label = "Mingan\nArchipelago"), family = "Times",  size = 3, fill = "white", label.size = 0) +
+  annotate("text", label = "James\nBay", family = "Times", x = -84.5, y = 52.3, size = 3) +
   scalebar(data = bb4, dist = 200, dist_unit = "km", transform = TRUE, model = "WGS84", 
-           location = "bottomright", height = 0.03, st.dist = 0.03, st.size = 3.5, st.color = "white", box.fill = alpha("white", alpha = 0),
-           box.color = "white", border.size = 1,
-           anchor = c(x = -61.5, y = 42)) +
+           location = "bottomright", height = 0.03, st.dist = 0.03, st.size = 2, st.color = "white", box.fill = alpha("white", alpha = 0),
+           box.color = "white", border.size = 0.5,
+           anchor = c(x = -61.5, y = 42.3)) +
   theme(axis.title = element_blank(),
         axis.text = element_blank(),
         axis.ticks = element_blank(),
-        panel.border = element_rect(fill = NA, colour = "black"))
+        panel.border = element_rect(fill = NA, colour = "black"),
+        plot.margin = margin(0, 0, 0, 0))
 
 # save and export plots
+jpeg(filename = "figures/complete_map.jpg",
+    width=6, height=5, units="in", res=600)
+
+ggdraw(studysites_map) + draw_plot(inset_map, x = 0.45, y = 0.545, width = 0.52, height = 0.455)
+
+dev.off()
+
+
 ggsave(plot = studysites_map, "figures/REKN_studysites_bw.jpg", dpi = 600)
 ggsave(plot = inset_map, "figures/REKN_inset_bw.jpg", dpi = 600)
 
@@ -119,7 +129,7 @@ inset_map <- ggmap(map2) +
         panel.border = element_rect(fill = NA, colour = "black"))
         #plot.margin = unit(c(0, 0, -1, -1), 'lines'))
 
-png(filename = "REKN_studysites.png")
+png(filename = "figures/REKN_studysites.png")
 #grid.newpage()
 vp_b <- viewport(width = 1, height = 1, x = 0.5, y = 0.5)  # the larger map
 vp_a <- viewport(width = 0.4, height = 0.4, x = 0.795, y = 0.8)  # the inset in upper left
