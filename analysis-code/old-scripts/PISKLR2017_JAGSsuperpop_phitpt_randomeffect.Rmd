@@ -99,7 +99,7 @@ Embed JAGS code so that program can be run from R:
 ```{r JAGS_setup}
 
 # embed JAGS code for IPM
-source("./analysis-code/JAGScode_superpop_phitpt.R")
+source("./analysis-code/JAGScode_superpop_phitpt_randomeffect.R")
 
 ```
 
@@ -111,18 +111,19 @@ Format datasets for analysis in JAGS:
 
 # convert FlagID to row names so a numeric matrix can be generated
 enchist <- enchist_pxda %>% 
-  column_to_rownames(var = "FlagID") %>% 
-  select_all(.funs = funs(paste0("P", .)))
+  column_to_rownames(var = "FlagID") 
+  #select_all(.funs = funs(paste0("P", .)))
+
+enchist <- sapply(enchist, as.numeric)  
   
-enchist <- data.matrix(enchist)
+#enchist <- data.matrix(enchist)
 
 # bundle data
 jags_data <- list(y = enchist, n.occasions = dim(enchist)[2], M = dim(enchist)[1],
                   n.ch = dim(enchist)[2],
                   m = flag_data$m, K = flag_data$K, n = length(flag_data$K), per = flag_data$per,
-                  a = age_data$a, Tot = age_data$Tot, n2 = length(age_data$Tot), rper = age_data$rper,
-                  n.per = length(unique(age_data$rper)))
-
+                  a = age_data$a, Tot = age_data$Tot, n2 = length(age_data$Tot),
+                  rper = age_data$rper, n.per = length(unique(age_data$rper)))
 
 ```
 
@@ -135,8 +136,8 @@ z.init <- enchist
 z.init[z.init==0] <- 1
 w.init <- rep(1, nrow(enchist))
 
-inits <- function(){list(phi_t = runif(dim(enchist)[2]-1, 0, 1),
-                         psight = runif(dim(enchist)[2], 0, 1),
+inits <- function(){list(mean.phi = runif(1, 0, 1), sigma_phi = runif(1, 0, 10),
+                         mean.p = runif(1, 0, 1), sigma_p = runif(1, 0, 10),
                          psi = runif(1, 0, 1),
                          z = z.init,
                          w = w.init,
@@ -145,7 +146,9 @@ inits <- function(){list(phi_t = runif(dim(enchist)[2]-1, 0, 1),
                          beta.rper = runif(14, -1, 1))}  
 
 # parameters monitored
-parameters <- c("psi", "phi_t", "psight", "b", "nu",
+parameters <- c("psi", "phi_t", "mean.phi", "sigma_phi2",
+                "psight", "mean.p", "sigma_p2",
+                "b", "nu",
                 "delta", "pflag", "meanpflag",
                 "beta.rper", "padult", "meanpadult",
                 "Nflag", "Nstopadult", "Nstop_t",
@@ -154,9 +157,9 @@ parameters <- c("psi", "phi_t", "psight", "b", "nu",
                 "Nsuperstop_Bt", "zes.days")
 
 # MCMC settings
-ni <- 60000 # number of iterations
+ni <- 100000 # number of iterations
 nt <- 4 # thin by factor
-nb <- 30000 # burn-in
+nb <- 50000 # burn-in
 nc <- 3 # number of chains
 
 ```
@@ -166,10 +169,11 @@ Run the IPM:
 ```{r run_model}
 
 # Call JAGS from R
-PISKLR2017_superpop_phitpt <- jags(jags_data, inits, parameters,
+PISKLR2017_phitpt <- jags(jags_data, inits, parameters,
+                            #"RDO-model.jags",
                             "js-super.jags",
                             n.chains = nc, n.thin = nt, n.iter = ni, n.burnin = nb,
-                            DIC= TRUE,
+                            DIC = TRUE,
                             parallel = TRUE)
 
 # view results
