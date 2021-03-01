@@ -396,6 +396,3 @@ Kéry, M., and M. Schaub. 2012. Bayesian population analysis using WinBUGS: a hi
 Lyons, J. E., W. L. Kendall, J. A. Royle, S. J. Converse, B. A. Andres, and J. B. Buchanan. 2016. Population size and stopover duration estimation using mark-resight data and Bayesian analysis of a superpopulation model. Biometrics 72:262–271. 
 
 Lyons, J. E., B. Winn, T. Keyes, and K. S. Kalasz. 2018. Post-breeding migration and connectivity of Red Knots in the Western Atlantic. Journal of Wildlife Management 82:383–396.
-
-R Core Team. 2020. R: A language and environment for statistical computing. R Foundation
-for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
