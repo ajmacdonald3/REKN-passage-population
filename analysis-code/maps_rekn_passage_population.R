@@ -87,12 +87,18 @@ inset <- ggplot(data = region2) +
   geom_label(aes(x = -63.9, y = 52.2, label = "Mingan\nArchipelago"),
              family = "Times",  size = 2.5, fill = "grey70", label.size = 0) +
   annotate("text", label = "James\nBay", family = "Times", x = -84.7, y = 52.3, size = 2.5) +
+  annotation_scale(location = "br", line_width = 0.25,
+                   pad_x = unit(0.1, "cm"), pad_y = unit(0.1, "cm"),
+                   text_cex = 0.5, height = unit(0.1, "cm")) +
+  annotation_north_arrow(location = "br", which_north = "true", 
+                         pad_x = unit(0.1, "cm"), pad_y = unit(0.25, "cm"),
+                         style = north_arrow_fancy_orienteering,
+                         height = unit(0.5, "cm"), width = unit(0.5, "cm")) +
   coord_sf(
     xlim = c(xmin2, xmax2),
     ylim = c(ymin2, ymax2),
     expand = FALSE
   ) +
-  
   theme(axis.title = element_blank(),
         axis.text = element_blank(),
         axis.ticks = element_blank(),

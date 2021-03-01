@@ -10,6 +10,8 @@ library(bb2enchist)
 library(car)
 library(reshape)
 #library(jagsUI)
+library(R2ucare)
+library(RMark)
 
 # check number of excluded resights
 # 2018
@@ -108,3 +110,36 @@ ymo_temp <- ymo_weather %>%
 ymo_precip <- ymo_weather %>% 
   group_by(Year) %>% 
   summarize(summer_precip = sum(`Total Precip (mm)`, na.rm = TRUE))
+
+# GOF checks
+# read in and format data
+rekn <- read_inp("./data-files/PISKLR2017_enchist_inp.inp")
+
+rekn_hist <- rekn$encounter_histories
+rekn_freq <- rekn$sample_size
+
+# run GOF tests
+
+test3sr(rekn_hist, rekn_freq) # transience - significant
+test3sm(rekn_hist, rekn_freq) # resighting rates - not significant
+test2ct(rekn_hist, rekn_freq) # equal resightability - significant
+test2cl(rekn_hist, rekn_freq) # equal resightability (before and after) - not significant
+overall_CJS(rekn_hist, rekn_freq) # significant
+
+# chat = chi-square/df = 10.331/21 = 0.492
+
+# read in and format data
+rekn <- read_inp("./data-files/ALLCAMPS2018_enchist_inp.inp")
+
+rekn_hist <- rekn$encounter_histories
+rekn_freq <- rekn$sample_size
+
+# run GOF tests
+
+test3sr(rekn_hist, rekn_freq) # transience - significant
+test3sm(rekn_hist, rekn_freq) # resighting rates - not significant
+test2ct(rekn_hist, rekn_freq) # equal resightability - significant
+test2cl(rekn_hist, rekn_freq) # equal resightability (before and after) - not significant
+overall_CJS(rekn_hist, rekn_freq) # significant
+
+# chat = chi-square/df = 103.539/44 = 2.353

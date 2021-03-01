@@ -245,3 +245,45 @@ png(filename = paste0("figures/StopHistPlots.png"),
 plot(stop_plots)
 
 dev.off()
+
+
+# parameter identifiability checks
+sims.list <- readRDS("./analysis-output/PISKLR2017_superpop_phitpt_sims.list_randomeffect_2021-01-31_fixlastentry_PXDA500.rds")
+sims.list <- as.data.frame(sims.list)
+
+theme_set(theme_bw())
+
+for (i in colnames(sims.list)){
+  
+  png(filename = paste0("analysis-output/parameter-identifiability-2017/",
+                        i, "-", "check.png"),
+      width = 4, height = 3, units = "in", res = 600)
+  
+  print(ggplot(sims.list, aes(sims.list[,i])) +
+          geom_density() +
+          geom_hline(yintercept = 1, linetype = "dashed") +
+          xlab(i))
+  
+  dev.off()
+  
+}
+
+sims.list <- readRDS("./analysis-output/ALLCAMPS2018_superpop_phitpt_sims.list_randomeffect2021-01-29_PXDA500.rds")
+sims.list <- as.data.frame(sims.list)
+
+theme_set(theme_bw())
+
+for (i in colnames(sims.list)){
+  
+  png(filename = paste0("analysis-output/parameter-identifiability-2018/",
+                        i, "-", "check.png"),
+      width = 4, height = 3, units = "in", res = 600)
+  
+  print(ggplot(sims.list, aes(sims.list[,i])) +
+          geom_density() +
+          geom_hline(yintercept = 1, linetype = "dashed") +
+          xlab(i))
+  
+  dev.off()
+  
+}
