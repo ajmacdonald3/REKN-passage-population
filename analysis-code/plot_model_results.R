@@ -218,7 +218,8 @@ zes_plot_2018 <- ggplot(sims_list_2018, aes(x=zes.days)) +
   theme_ajm() +
   theme(axis.title.x = element_text(size = 10)) +
   scale_x_continuous(limits = c(5, 19), breaks = seq(5, 19, 2)) +
-  scale_y_continuous(limits = c(0,3500), expand = c(0,0), breaks = seq(0, 3500, 500)) +
+  scale_y_continuous(limits = c(0,3500), expand = c(0,0), breaks = seq(0, 3500, 500),
+                     labels = scales::comma) +
   xlab("Stopover duration (days)") +
   ylab("Frequency (MCMC iterations)")
 
@@ -231,7 +232,8 @@ zes_plot_2017 <- ggplot(sims_list_2017, aes(x=zes.days)) +
   theme_ajm() +
   theme(axis.title.x = element_text(size = 10)) +
   scale_x_continuous(limits = c(5, 19), breaks = seq(5, 19, 2)) +
-  scale_y_continuous(limits = c(0,2200), expand = c(0,0), breaks = seq(0, 2200, 500)) +
+  scale_y_continuous(limits = c(0,2200), expand = c(0,0), breaks = seq(0, 2200, 500),
+                     labels = scales::comma) +
   xlab("Stopover duration (days)") +
   ylab("Frequency (MCMC iterations)")
 
